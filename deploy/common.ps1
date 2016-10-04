@@ -18,7 +18,10 @@ task Archive -depends Init {
     if (Test-Path output) {
             Move-Item output\* archive\$archiveFolder
             Remove-Item output\*
-    }        
+    }
+    else {
+        New-Item -ItemType Directory -Force -Path output
+    }
 }
 
 task Build -depends Init{

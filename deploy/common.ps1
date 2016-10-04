@@ -31,6 +31,6 @@ task Pack -depends Build {
 }
 
 task Publish -depends Pack {
-        $PackageName = gci output\$NuGetPackageName.*.nupkg 
+        $PackageName = gci output\$NuGetPackageName.*.nupkg
         exec { nuget push $PackageName }
 }

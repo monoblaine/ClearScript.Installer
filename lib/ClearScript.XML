@@ -11,6 +11,23 @@
             <returns><c>True</c> to continue script execution, <c>false</c> to interrupt it.</returns>
             <seealso cref="P:Microsoft.ClearScript.ScriptEngine.ContinuationCallback"/>
         </member>
+        <member name="T:Microsoft.ClearScript.ImmutableValueAttribute">
+            <summary>
+            Specifies that instances of the target struct are immutable.
+            </summary>
+            <remarks>
+            When this attribute is applied to a struct, ClearScript exposes the same object reference
+            for all instances of the struct that satisfy equality comparison, giving script code the
+            ability to use native equality operators to compare the exposed objects. This behavior is
+            also enabled automatically for all enums, numeric types, <see cref="T:System.DateTime"/>,
+            <see cref="T:System.DateTimeOffset"/>, and <see cref="T:System.TimeSpan"/>.
+            </remarks>
+        </member>
+        <member name="M:Microsoft.ClearScript.ImmutableValueAttribute.#ctor">
+            <summary>
+            Initializes a new <see cref="T:Microsoft.ClearScript.ImmutableValueAttribute"/> instance.
+            </summary>
+        </member>
         <member name="T:Microsoft.ClearScript.HostItemFlags">
             <summary>
             Defines options for exposing host resources to script code.
@@ -36,6 +53,14 @@
             <summary>
             Specifies that the host resource's dynamic members are not to be exposed. This option
             applies only to objects that implement <see cref="T:System.Dynamic.IDynamicMetaObjectProvider"/>.
+            </summary>
+        </member>
+        <member name="F:Microsoft.ClearScript.HostItemFlags.DirectAccess">
+            <summary>
+            Specifies that the script engine is to be given direct access to the exposed object if
+            possible. This option, when supported, suppresses marshaling and hands off the object
+            for script access without the host's involvement. It is currently supported only for
+            COM objects exposed in Windows Script engines.
             </summary>
         </member>
         <member name="T:Microsoft.ClearScript.IScriptableObject">
@@ -85,9 +110,241 @@
             Gets a value that indicates whether the exception represents a fatal error.
             </summary>
         </member>
+        <member name="P:Microsoft.ClearScript.IScriptEngineException.ExecutionStarted">
+            <summary>
+            Gets a value that indicates whether script code execution had started before the current exception was thrown.
+            </summary>
+        </member>
         <member name="P:Microsoft.ClearScript.IScriptEngineException.InnerException">
             <summary>
             Gets the exception that caused the current exception to be thrown, or <c>null</c> if one was not specified.
+            </summary>
+        </member>
+        <member name="T:Microsoft.ClearScript.DefaultScriptUsageAttribute">
+            <summary>
+            Specifies defaults for how type members are to be exposed to script code.
+            </summary>
+            <remarks>
+            This attribute is applicable to classes, enums, interfaces, structs, and assemblies. Use
+            <see cref="T:Microsoft.ClearScript.ScriptUsageAttribute"/>, <see cref="T:Microsoft.ClearScript.ScriptMemberAttribute"/>, or
+            <see cref="T:Microsoft.ClearScript.NoScriptAccessAttribute"/> to override it for individual type members.
+            </remarks>
+        </member>
+        <member name="M:Microsoft.ClearScript.DefaultScriptUsageAttribute.#ctor">
+            <summary>
+            Initializes a new <see cref="T:Microsoft.ClearScript.DefaultScriptUsageAttribute"/> instance.
+            </summary>
+        </member>
+        <member name="M:Microsoft.ClearScript.DefaultScriptUsageAttribute.#ctor(Microsoft.ClearScript.ScriptAccess)">
+            <summary>
+            Initializes a new <see cref="T:Microsoft.ClearScript.DefaultScriptUsageAttribute"/> instance with the specified default script access setting.
+            </summary>
+            <param name="access">The default script access setting for type members.</param>
+        </member>
+        <member name="P:Microsoft.ClearScript.DefaultScriptUsageAttribute.Access">
+            <summary>
+            Gets the default script access setting for type members.
+            </summary>
+        </member>
+        <member name="T:Microsoft.ClearScript.JavaScript.IArrayBuffer">
+            <summary>
+            Represents a JavaScript
+            <see href="https://msdn.microsoft.com/en-us/library/br212474(v=vs.94).aspx">ArrayBuffer</see>.
+            </summary>
+        </member>
+        <member name="M:Microsoft.ClearScript.JavaScript.IArrayBuffer.GetBytes">
+            <summary>
+            Creates a byte array containing a copy of the <c>ArrayBuffer</c>'s contents.
+            </summary>
+            <returns>A new byte array containing a copy of the <c>ArrayBuffer</c>'s contents.</returns>
+        </member>
+        <member name="M:Microsoft.ClearScript.JavaScript.IArrayBuffer.ReadBytes(System.UInt64,System.UInt64,System.Byte[],System.UInt64)">
+            <summary>
+            Copies bytes from the <c>ArrayBuffer</c> into the specified byte array.
+            </summary>
+            <param name="offset">The offset within the <c>ArrayBuffer</c> of the first byte to copy.</param>
+            <param name="count">The maximum number of bytes to copy.</param>
+            <param name="destination">The byte array into which to copy the bytes.</param>
+            <param name="destinationIndex">The index within <paramref name="destination"/> at which to store the first copied byte.</param>
+            <returns>The number of bytes copied.</returns>
+        </member>
+        <member name="M:Microsoft.ClearScript.JavaScript.IArrayBuffer.WriteBytes(System.Byte[],System.UInt64,System.UInt64,System.UInt64)">
+            <summary>
+            Copies bytes from the specified byte array into the <c>ArrayBuffer</c>.
+            </summary>
+            <param name="source">The byte array from which to copy the bytes.</param>
+            <param name="sourceIndex">The index within <paramref name="source"/> of the first byte to copy.</param>
+            <param name="count">The maximum number of bytes to copy.</param>
+            <param name="offset">The offset within the <c>ArrayBuffer</c> at which to store the first copied byte.</param>
+            <returns>The number of bytes copied.</returns>
+        </member>
+        <member name="P:Microsoft.ClearScript.JavaScript.IArrayBuffer.Size">
+            <summary>
+            Gets the size of the <c>ArrayBuffer</c> in bytes.
+            </summary>
+        </member>
+        <member name="T:Microsoft.ClearScript.JavaScript.IArrayBufferView">
+            <summary>
+            Defines properties and methods common to all
+            <see href="https://msdn.microsoft.com/en-us/library/br212474(v=vs.94).aspx">ArrayBuffer</see>
+            views.
+            </summary>
+        </member>
+        <member name="M:Microsoft.ClearScript.JavaScript.IArrayBufferView.GetBytes">
+            <summary>
+            Creates a byte array containing a copy of the view's contents.
+            </summary>
+            <returns>A new byte array containing a copy of the view's contents.</returns>
+        </member>
+        <member name="M:Microsoft.ClearScript.JavaScript.IArrayBufferView.ReadBytes(System.UInt64,System.UInt64,System.Byte[],System.UInt64)">
+            <summary>
+            Copies bytes from the view into the specified byte array.
+            </summary>
+            <param name="offset">The offset within the view of the first byte to copy.</param>
+            <param name="count">The maximum number of bytes to copy.</param>
+            <param name="destination">The byte array into which to copy the bytes.</param>
+            <param name="destinationIndex">The index within <paramref name="destination"/> at which to store the first copied byte.</param>
+            <returns>The number of bytes copied.</returns>
+        </member>
+        <member name="M:Microsoft.ClearScript.JavaScript.IArrayBufferView.WriteBytes(System.Byte[],System.UInt64,System.UInt64,System.UInt64)">
+            <summary>
+            Copies bytes from the specified byte array into the view.
+            </summary>
+            <param name="source">The byte array from which to copy the bytes.</param>
+            <param name="sourceIndex">The index within <paramref name="source"/> of the first byte to copy.</param>
+            <param name="count">The maximum number of bytes to copy.</param>
+            <param name="offset">The offset within the view at which to store the first copied byte.</param>
+            <returns>The number of bytes copied.</returns>
+        </member>
+        <member name="P:Microsoft.ClearScript.JavaScript.IArrayBufferView.ArrayBuffer">
+            <summary>
+            Gets view's underlying <c>ArrayBuffer</c>.
+            </summary>
+        </member>
+        <member name="P:Microsoft.ClearScript.JavaScript.IArrayBufferView.Offset">
+            <summary>
+            Gets the view's offset within the underlying <c>ArrayBuffer</c>.
+            </summary>
+        </member>
+        <member name="P:Microsoft.ClearScript.JavaScript.IArrayBufferView.Size">
+            <summary>
+            Gets the view's size in bytes.
+            </summary>
+        </member>
+        <member name="T:Microsoft.ClearScript.JavaScript.IDataView">
+            <summary>
+            Represents a JavaScript
+            <see href="https://msdn.microsoft.com/en-us/library/br212463(v=vs.94).aspx">DataView</see>.
+            </summary>
+        </member>
+        <member name="T:Microsoft.ClearScript.JavaScript.ITypedArray">
+            <summary>
+            Defines properties and methods common to all JavaScript
+            <see href="https://msdn.microsoft.com/en-us/library/br212485(v=vs.94).aspx">typed arrays</see>.
+            </summary>
+        </member>
+        <member name="P:Microsoft.ClearScript.JavaScript.ITypedArray.Length">
+            <summary>
+            Gets the typed array's length.
+            </summary>
+        </member>
+        <member name="T:Microsoft.ClearScript.JavaScript.ITypedArray`1">
+            <summary>
+            Represents a JavaScript <see href="https://msdn.microsoft.com/en-us/library/br212485(v=vs.94).aspx">typed array</see>.
+            </summary>
+            <typeparam name="T">The typed array's element type.</typeparam>
+            <remarks>
+            <para>
+            The following table lists the specific interfaces implemented by JavaScript typed arrays:
+            </para>
+            <para>
+            <list type="table">
+                <listheader>
+                    <term>Typed&#xA0;Array</term>
+                    <term>Interface(s)&#xA0;(C#)</term>
+                </listheader>
+                <item>
+                    <term><see href="https://msdn.microsoft.com/en-us/library/br212477(v=vs.94).aspx">Uint8Array</see></term>
+                    <term><c>ITypedArray&#x3C;byte&#x3E;</c></term>
+                </item>
+                <item>
+                    <term><see href="https://msdn.microsoft.com/en-us/library/dn641188(v=vs.94).aspx">Uint8ClampedArray</see></term>
+                    <term><c>ITypedArray&#x3C;byte&#x3E;</c></term>
+                </item>
+                <item>
+                    <term><see href="https://msdn.microsoft.com/en-us/library/br212462(v=vs.94).aspx">Int8Array</see></term>
+                    <term><c>ITypedArray&#x3C;sbyte&#x3E;</c></term>
+                </item>
+                <item>
+                    <term><see href="https://msdn.microsoft.com/en-us/library/br212484(v=vs.94).aspx">Uint16Array</see></term>
+                    <term><c>ITypedArray&#x3C;ushort&#x3E;</c> and <c>ITypedArray&#x3C;char&#x3E;</c></term>
+                </item>
+                <item>
+                    <term><see href="https://msdn.microsoft.com/en-us/library/br212480(v=vs.94).aspx">Int16Array</see></term>
+                    <term><c>ITypedArray&#x3C;short&#x3E;</c></term>
+                </item>
+                <item>
+                    <term><see href="https://msdn.microsoft.com/en-us/library/br230737(v=vs.94).aspx">Uint32Array</see></term>
+                    <term><c>ITypedArray&#x3C;uint&#x3E;</c></term>
+                </item>
+                <item>
+                    <term><see href="https://msdn.microsoft.com/en-us/library/br212468(v=vs.94).aspx">Int32Array</see></term>
+                    <term><c>ITypedArray&#x3C;int&#x3E;</c></term>
+                </item>
+                <item>
+                    <term><see href="https://msdn.microsoft.com/en-us/library/br212916(v=vs.94).aspx">Float32Array</see></term>
+                    <term><c>ITypedArray&#x3C;float&#x3E;</c></term>
+                </item>
+                <item>
+                    <term><see href="https://msdn.microsoft.com/en-us/library/br212931(v=vs.94).aspx">Float64Array</see></term>
+                    <term><c>ITypedArray&#x3C;double&#x3E;</c></term>
+                </item>
+            </list>
+            </para>
+            </remarks>
+        </member>
+        <member name="M:Microsoft.ClearScript.JavaScript.ITypedArray`1.ToArray">
+            <summary>
+            Creates an array containing a copy of the typed array's contents.
+            </summary>
+            <returns>A new array containing a copy of the typed array's contents.</returns>
+        </member>
+        <member name="M:Microsoft.ClearScript.JavaScript.ITypedArray`1.Read(System.UInt64,System.UInt64,`0[],System.UInt64)">
+            <summary>
+            Copies elements from the typed array into the specified array.
+            </summary>
+            <param name="index">The index within the typed array of the first element to copy.</param>
+            <param name="length">The maximum number of elements to copy.</param>
+            <param name="destination">The array into which to copy the elements.</param>
+            <param name="destinationIndex">The index within <paramref name="destination"/> at which to store the first copied element.</param>
+            <returns>The number of elements copied.</returns>
+        </member>
+        <member name="M:Microsoft.ClearScript.JavaScript.ITypedArray`1.Write(`0[],System.UInt64,System.UInt64,System.UInt64)">
+            <summary>
+            Copies elements from the specified array into the typed array.
+            </summary>
+            <param name="source">The array from which to copy the elements.</param>
+            <param name="sourceIndex">The index within <paramref name="source"/> of the first element to copy.</param>
+            <param name="length">The maximum number of elements to copy.</param>
+            <param name="index">The index within the typed array at which to store the first copied element.</param>
+            <returns>The number of elements copied.</returns>
+        </member>
+        <member name="T:Microsoft.ClearScript.NoDefaultScriptAccessAttribute">
+            <summary>
+            Specifies that script code is to have no access to type members by default.
+            </summary>
+            <remarks>
+            This attribute is applicable to classes, enums, interfaces, structs, and assemblies. Use
+            <see cref="T:Microsoft.ClearScript.ScriptUsageAttribute"/>, <see cref="T:Microsoft.ClearScript.ScriptMemberAttribute"/>, or
+            <see cref="T:Microsoft.ClearScript.NoScriptAccessAttribute"/> to override it for individual type members. Note that
+            it has no effect on the method binding algorithm. If a script-based call is bound to a
+            method that is blocked by this attribute, it will be rejected even if an overload exists
+            that could receive the call.
+            </remarks>
+        </member>
+        <member name="M:Microsoft.ClearScript.NoDefaultScriptAccessAttribute.#ctor">
+            <summary>
+            Initializes a new <see cref="T:Microsoft.ClearScript.NoDefaultScriptAccessAttribute"/> instance.
             </summary>
         </member>
         <member name="T:Microsoft.ClearScript.NoScriptAccessAttribute">
@@ -95,10 +352,10 @@
             Specifies that script code is to have no access to the target type member.
             </summary>
             <remarks>
-            This attribute is applicable to events, fields, methods, and properties. Note that it has
-            no effect on the method binding algorithm. If a script-based call is bound to a method that
-            is blocked by this attribute, it will be rejected even if an overload exists that could
-            receive the call.
+            This attribute is applicable to events, fields, methods, properties, and nested types. Note
+            that it has no effect on the method binding algorithm. If a script-based call is bound to a
+            method that is blocked by this attribute, it will be rejected even if an overload exists
+            that could receive the call.
             </remarks>
         </member>
         <member name="T:Microsoft.ClearScript.ScriptUsageAttribute">
@@ -106,7 +363,7 @@
             Specifies how the target type member is to be exposed to script code.
             </summary>
             <remarks>
-            This attribute is applicable to events, fields, methods, and properties.
+            This attribute is applicable to events, fields, methods, properties, and nested types.
             </remarks>
         </member>
         <member name="M:Microsoft.ClearScript.ScriptUsageAttribute.#ctor">
@@ -118,11 +375,11 @@
             <summary>
             Initializes a new <see cref="T:Microsoft.ClearScript.ScriptUsageAttribute"/> instance with the specified script access setting.
             </summary>
-            <param name="access">The script access setting for the type member.</param>
+            <param name="access">The script access setting for the target type member.</param>
         </member>
         <member name="P:Microsoft.ClearScript.ScriptUsageAttribute.Access">
             <summary>
-            Gets the script access setting for the type member.
+            Gets the script access setting for the target type member.
             </summary>
         </member>
         <member name="M:Microsoft.ClearScript.NoScriptAccessAttribute.#ctor">
@@ -212,6 +469,11 @@
             Gets a value that indicates whether the exception represents a fatal error.
             </summary>
         </member>
+        <member name="P:Microsoft.ClearScript.ScriptEngineException.ExecutionStarted">
+            <summary>
+            Gets a value that indicates whether script code execution had started before the current exception was thrown.
+            </summary>
+        </member>
         <member name="T:Microsoft.ClearScript.ScriptInterruptedException">
             <summary>
             The exception that is thrown when script execution is interrupted by the host.
@@ -269,6 +531,11 @@
             Gets a value that indicates whether the exception represents a fatal error.
             </summary>
         </member>
+        <member name="P:Microsoft.ClearScript.ScriptInterruptedException.ExecutionStarted">
+            <summary>
+            Gets a value that indicates whether script code execution had started before the current exception was thrown.
+            </summary>
+        </member>
         <member name="T:Microsoft.ClearScript.ScriptMemberFlags">
             <summary>
             Defines options for exposing type members to script code.
@@ -285,10 +552,26 @@
             its declared type.
             </summary>
         </member>
+        <member name="F:Microsoft.ClearScript.ScriptMemberFlags.WrapNullResult">
+            <summary>
+            Specifies that the field, property, or method return value is to be marshaled with full
+            .NET type information even if it is <c>null</c>. Note that such a value will always
+            fail equality comparison with JavaScript's
+            <see href="https://msdn.microsoft.com/en-us/library/ie/fhcc96d6(v=vs.94).aspx">null</see>,
+            VBScript's
+            <see href="https://msdn.microsoft.com/en-us/library/f8tbc79x(v=vs.85).aspx">Nothing</see>,
+            and other similar values. Instead, use <see cref="M:Microsoft.ClearScript.HostFunctions.isNull(System.Object)"/> or
+            <see cref="M:System.Object.Equals(System.Object,System.Object)"/> to perform such a comparison.
+            </summary>
+        </member>
         <member name="T:Microsoft.ClearScript.ScriptMemberAttribute">
             <summary>
-            Specifies how the target event, field, method, or property is to be exposed to script code.
+            Specifies how the target type member is to be exposed to script code. This extended version
+            supports additional options.
             </summary>
+            <remarks>
+            This attribute is applicable to events, fields, methods, and properties.
+            </remarks>
         </member>
         <member name="M:Microsoft.ClearScript.ScriptMemberAttribute.#ctor">
             <summary>
@@ -299,63 +582,63 @@
             <summary>
             Initializes a new <see cref="T:Microsoft.ClearScript.ScriptMemberAttribute"/> instance with the specified name.
             </summary>
-            <param name="name">The name that script code will use to access the type member.</param>
+            <param name="name">The name that script code will use to access the target type member.</param>
         </member>
         <member name="M:Microsoft.ClearScript.ScriptMemberAttribute.#ctor(Microsoft.ClearScript.ScriptAccess)">
             <summary>
             Initializes a new <see cref="T:Microsoft.ClearScript.ScriptMemberAttribute"/> instance with the specified script access setting.
             </summary>
-            <param name="access">The script access setting for the type member.</param>
+            <param name="access">The script access setting for the target type member.</param>
         </member>
         <member name="M:Microsoft.ClearScript.ScriptMemberAttribute.#ctor(System.String,Microsoft.ClearScript.ScriptAccess)">
             <summary>
             Initializes a new <see cref="T:Microsoft.ClearScript.ScriptMemberAttribute"/> instance with the specified name and script access setting.
             </summary>
-            <param name="name">The name that script code will use to access the type member.</param>
-            <param name="access">The script access setting for the type member.</param>
+            <param name="name">The name that script code will use to access the target type member.</param>
+            <param name="access">The script access setting for the target type member.</param>
         </member>
         <member name="M:Microsoft.ClearScript.ScriptMemberAttribute.#ctor(Microsoft.ClearScript.ScriptMemberFlags)">
             <summary>
             Initializes a new <see cref="T:Microsoft.ClearScript.ScriptMemberAttribute"/> instance with the specified script options.
             </summary>
-            <param name="flags">The script options for the type member.</param>
+            <param name="flags">The script options for the target type member.</param>
         </member>
         <member name="M:Microsoft.ClearScript.ScriptMemberAttribute.#ctor(System.String,Microsoft.ClearScript.ScriptMemberFlags)">
             <summary>
             Initializes a new <see cref="T:Microsoft.ClearScript.ScriptMemberAttribute"/> instance with the specified name and script options.
             </summary>
-            <param name="name">The name that script code will use to access the type member.</param>
-            <param name="flags">The script options for the type member.</param>
+            <param name="name">The name that script code will use to access the target type member.</param>
+            <param name="flags">The script options for the target type member.</param>
         </member>
         <member name="M:Microsoft.ClearScript.ScriptMemberAttribute.#ctor(Microsoft.ClearScript.ScriptAccess,Microsoft.ClearScript.ScriptMemberFlags)">
             <summary>
             Initializes a new <see cref="T:Microsoft.ClearScript.ScriptMemberAttribute"/> instance with the specified script access setting and script options.
             </summary>
-            <param name="access">The script access setting for the type member.</param>
-            <param name="flags">The script options for the type member.</param>
+            <param name="access">The script access setting for the target type member.</param>
+            <param name="flags">The script options for the target type member.</param>
         </member>
         <member name="M:Microsoft.ClearScript.ScriptMemberAttribute.#ctor(System.String,Microsoft.ClearScript.ScriptAccess,Microsoft.ClearScript.ScriptMemberFlags)">
             <summary>
             Initializes a new <see cref="T:Microsoft.ClearScript.ScriptMemberAttribute"/> instance with the specified name, script access setting, and script options.
             </summary>
-            <param name="name">The name that script code will use to access the type member.</param>
-            <param name="access">The script access setting for the type member.</param>
-            <param name="flags">The script options for the type member.</param>
+            <param name="name">The name that script code will use to access the target type member.</param>
+            <param name="access">The script access setting for the target type member.</param>
+            <param name="flags">The script options for the target type member.</param>
         </member>
         <member name="P:Microsoft.ClearScript.ScriptMemberAttribute.Name">
             <summary>
-            Gets or sets the name that script code will use to access the type member.
+            Gets or sets the name that script code will use to access the target type member.
             </summary>
             <remarks>
-            The default value is the name of the type member. Note that this property has no effect
-            on the method binding algorithm. If a script-based call is bound to a method that is
-            exposed under a different name, it will be rejected even if an overload exists that
-            could receive the call.
+            The default value is the name of the target type member. Note that this property has no
+            effect on the method binding algorithm. If a script-based call is bound to a method
+            that is exposed under a different name, it will be rejected even if an overload exists
+            that could receive the call.
             </remarks>
         </member>
         <member name="P:Microsoft.ClearScript.ScriptMemberAttribute.Flags">
             <summary>
-            Gets or sets the script options for the type member.
+            Gets or sets the script options for the target type member.
             </summary>
         </member>
         <member name="T:Microsoft.ClearScript.V8.V8RuntimeHeapInfo">
@@ -421,23 +704,55 @@
         </member>
         <member name="P:Microsoft.ClearScript.V8.V8RuntimeConstraints.MaxNewSpaceSize">
             <summary>
-            Gets or sets the maximum size of the new object heap in bytes.
+            Gets or sets the maximum size of the new object heap in
+            <see href="http://en.wikipedia.org/wiki/Mebibyte">MiB</see>.
             </summary>
+            <remarks>
+            For maximum compatibility with hosts that predate an inadvertent breaking change in
+            ClearScript 5.4.1, values greater than 1048576
+            (1 <see href="http://en.wikipedia.org/wiki/Tebibyte">TiB</see>) are assumed to be in
+            bytes rather than MiB. For example, the values 16 and 16777216 both specify a limit
+            of 16 MiB.
+            </remarks>
         </member>
         <member name="P:Microsoft.ClearScript.V8.V8RuntimeConstraints.MaxOldSpaceSize">
             <summary>
-            Gets or sets the maximum size of the old object heap in bytes.
+            Gets or sets the maximum size of the old object heap in
+            <see href="http://en.wikipedia.org/wiki/Mebibyte">MiB</see>.
             </summary>
+            <remarks>
+            For maximum compatibility with hosts that predate an inadvertent breaking change in
+            ClearScript 5.4.1, values greater than 1048576
+            (1 <see href="http://en.wikipedia.org/wiki/Tebibyte">TiB</see>) are assumed to be in
+            bytes rather than MiB. For example, the values 16 and 16777216 both specify a limit
+            of 16 MiB.
+            </remarks>
         </member>
         <member name="P:Microsoft.ClearScript.V8.V8RuntimeConstraints.MaxExecutableSize">
             <summary>
-            Gets or sets the maximum size of the executable code heap in bytes.
+            Gets or sets the maximum size of the executable code heap in
+            <see href="http://en.wikipedia.org/wiki/Mebibyte">MiB</see>.
             </summary>
+            <remarks>
+            For maximum compatibility with hosts that predate an inadvertent breaking change in
+            ClearScript 5.4.1, values greater than 1048576
+            (1 <see href="http://en.wikipedia.org/wiki/Tebibyte">TiB</see>) are assumed to be in
+            bytes rather than MiB. For example, the values 16 and 16777216 both specify a limit
+            of 16 MiB.
+            </remarks>
         </member>
         <member name="P:Microsoft.ClearScript.V8.V8RuntimeConstraints.MaxYoungSpaceSize">
             <summary>
-            Gets or sets the maximum size of the young object heap in bytes.
+            Gets or sets the maximum size of the young object heap in
+            <see href="http://en.wikipedia.org/wiki/Mebibyte">MiB</see>.
             </summary>
+            <remarks>
+            For maximum compatibility with hosts that predate an inadvertent breaking change in
+            ClearScript 5.4.1, values greater than 1048576
+            (1 <see href="http://en.wikipedia.org/wiki/Tebibyte">TiB</see>) are assumed to be in
+            bytes rather than MiB. For example, the values 16 and 16777216 both specify a limit
+            of 16 MiB.
+            </remarks>
         </member>
         <member name="T:Microsoft.ClearScript.V8.V8Runtime">
             <summary>
@@ -556,8 +871,10 @@
             <param name="flags">A value that selects options for the operation.</param>
             <returns>A new V8 script engine instance.</returns>
             <remarks>
+            <para>
             The new script engine instance shares the V8 runtime with other instances created by
             this method and any of its overloads.
+            </para>
             <para>
             V8 supports one script debugger per runtime. If script debugging has been enabled in
             the current runtime, additional script engine instances cannot disable it or change its
@@ -573,8 +890,10 @@
             <param name="debugPort">A TCP/IP port on which to listen for a debugger connection.</param>
             <returns>A new V8 script engine instance.</returns>
             <remarks>
+            <para>
             The new script engine instance shares the V8 runtime with other instances created by
             this method and any of its overloads.
+            </para>
             <para>
             V8 supports one script debugger per runtime. If script debugging has been enabled in
             the current runtime, additional script engine instances cannot disable it or change its
@@ -590,8 +909,10 @@
             <param name="flags">A value that selects options for the operation.</param>
             <returns>A new V8 script engine instance.</returns>
             <remarks>
+            <para>
             The new script engine instance shares the V8 runtime with other instances created by
             this method and any of its overloads.
+            </para>
             <para>
             V8 supports one script debugger per runtime. If script debugging has been enabled in
             the current runtime, additional script engine instances cannot disable it or change its
@@ -608,8 +929,10 @@
             <param name="debugPort">A TCP/IP port on which to listen for a debugger connection.</param>
             <returns>A new V8 script engine instance.</returns>
             <remarks>
+            <para>
             The new script engine instance shares the V8 runtime with other instances created by
             this method and any of its overloads.
+            </para>
             <para>
             V8 supports one script debugger per runtime. If script debugging has been enabled in
             the current runtime, additional script engine instances cannot disable it or change its
@@ -676,9 +999,11 @@
             Gets or sets a soft limit for the size of the V8 runtime's heap.
             </summary>
             <remarks>
+            <para>
             This property is specified in bytes. When it is set to the default value, heap size
             monitoring is disabled, and scripts with memory leaks or excessive memory usage
             can cause unrecoverable errors and process termination.
+            </para>
             <para>
             A V8 runtime unconditionally terminates the process when it exceeds its resource
             constraints (see <see cref="T:Microsoft.ClearScript.V8.V8RuntimeConstraints"/>). This property enables external
@@ -707,9 +1032,11 @@
             Gets or sets the maximum amount by which the stack is permitted to grow during script execution.
             </summary>
             <remarks>
+            <para>
             This property is specified in bytes. When it is set to the default value, no stack
             usage limit is enforced, and scripts with unchecked recursion or other excessive stack
             usage can cause unrecoverable errors and process termination.
+            </para>
             <para>
             Note that the V8 runtime does not monitor stack usage while a host call is in progress.
             Monitoring is resumed when control returns to the runtime.
@@ -729,6 +1056,23 @@
         <member name="F:Microsoft.ClearScript.V8.V8RuntimeFlags.EnableDebugging">
             <summary>
             Specifies that script debugging features are to be enabled.
+            </summary>
+        </member>
+        <member name="T:Microsoft.ClearScript.Windows.IHostWindow">
+            <summary>
+            Allows Windows Script engines to display dialogs within the host's user interface.
+            </summary>
+            <seealso cref="P:Microsoft.ClearScript.Windows.WindowsScriptEngine.HostWindow"/>
+        </member>
+        <member name="M:Microsoft.ClearScript.Windows.IHostWindow.EnableModeless(System.Boolean)">
+            <summary>
+            Enables or disables the host's modeless dialogs.
+            </summary>
+            <param name="enable"><c>True</c> to enable the host's modeless dialogs, <c>false</c> otherwise.</param>
+        </member>
+        <member name="P:Microsoft.ClearScript.Windows.IHostWindow.OwnerHandle">
+            <summary>
+            Gets the handle of an owner window for displaying dialogs on behalf of script code.
             </summary>
         </member>
         <member name="T:Microsoft.ClearScript.Windows.WindowsScriptEngineFlags">
@@ -787,6 +1131,17 @@
             object to to access them.
             </summary>
         </member>
+        <member name="F:Microsoft.ClearScript.Windows.WindowsScriptEngineFlags.DoNotEnableVTablePatching">
+            <summary>
+            When <see cref="F:Microsoft.ClearScript.Windows.WindowsScriptEngineFlags.EnableStandardsMode"/> is specified, the ClearScript library uses
+            virtual method table patching to support JScript-specific
+            <see href="https://msdn.microsoft.com/en-us/library/sky96ah7(VS.94).aspx">IDispatchEx</see>
+            extensions that otherwise interfere with some host object functionality. Virtual method
+            table patching is a very low-level mechanism with global effect. This option specifies
+            that virtual method table patching is not to be enabled on behalf of the current
+            <see cref="T:Microsoft.ClearScript.Windows.JScriptEngine"/> instance.
+            </summary>
+        </member>
         <member name="T:Microsoft.ClearScript.V8.V8ScriptEngineFlags">
             <summary>
             Defines options for initializing a new V8 JavaScript engine instance.
@@ -838,9 +1193,11 @@
             <param name="flags">A value that selects options for the operation.</param>
             <param name="target">The object to expose.</param>
             <remarks>
+            <para>
             Once a host object is exposed to script code, its members are accessible via the script
             language's native syntax for member access. The following table provides details about
             the mapping between host members and script-accessible properties and methods.
+            </para>
             <para>
             <list type="table">
                 <listheader>
@@ -923,8 +1280,10 @@
             <param name="itemName">A name for the new global script item that will represent the object.</param>
             <param name="target">The object to expose.</param>
             <remarks>
+            <para>
             This method can be used to restrict script access to the members of a particular
             interface or base class.
+            </para>
             <para>
             For information about the mapping between host members and script-callable properties
             and methods, see <see cref="M:Microsoft.ClearScript.ScriptEngine.AddHostObject(System.String,Microsoft.ClearScript.HostItemFlags,System.Object)"/>.
@@ -940,8 +1299,10 @@
             <param name="flags">A value that selects options for the operation.</param>
             <param name="target">The object to expose.</param>
             <remarks>
+            <para>
             This method can be used to restrict script access to the members of a particular
             interface or base class.
+            </para>
             <para>
             For information about the mapping between host members and script-callable properties
             and methods, see <see cref="M:Microsoft.ClearScript.ScriptEngine.AddHostObject(System.String,Microsoft.ClearScript.HostItemFlags,System.Object)"/>.
@@ -956,8 +1317,10 @@
             <param name="itemName">A name for the new global script item that will represent the object.</param>
             <param name="progID">The programmatic identifier (ProgID) of the registered class to instantiate.</param>
             <remarks>
+            <para>
             The <paramref name="progID"/> argument can be a class identifier (CLSID) in standard
             GUID format with braces (e.g., "{0D43FE01-F093-11CF-8940-00A0C9054228}").
+            </para>
             <para>
             For information about the mapping between host members and script-callable properties
             and methods, see <see cref="M:Microsoft.ClearScript.ScriptEngine.AddHostObject(System.String,Microsoft.ClearScript.HostItemFlags,System.Object)"/>.
@@ -973,8 +1336,10 @@
             <param name="progID">The programmatic identifier (ProgID) of the registered class to instantiate.</param>
             <param name="serverName">The name of the server on which to create the object.</param>
             <remarks>
+            <para>
             The <paramref name="progID"/> argument can be a class identifier (CLSID) in standard
             GUID format with braces (e.g., "{0D43FE01-F093-11CF-8940-00A0C9054228}").
+            </para>
             <para>
             For information about the mapping between host members and script-callable properties
             and methods, see <see cref="M:Microsoft.ClearScript.ScriptEngine.AddHostObject(System.String,Microsoft.ClearScript.HostItemFlags,System.Object)"/>.
@@ -990,8 +1355,10 @@
             <param name="flags">A value that selects options for the operation.</param>
             <param name="progID">The programmatic identifier (ProgID) of the registered class to instantiate.</param>
             <remarks>
+            <para>
             The <paramref name="progID"/> argument can be a class identifier (CLSID) in standard
             GUID format with braces (e.g., "{0D43FE01-F093-11CF-8940-00A0C9054228}").
+            </para>
             <para>
             For information about the mapping between host members and script-callable properties
             and methods, see <see cref="M:Microsoft.ClearScript.ScriptEngine.AddHostObject(System.String,Microsoft.ClearScript.HostItemFlags,System.Object)"/>.
@@ -1008,8 +1375,10 @@
             <param name="progID">The programmatic identifier (ProgID) of the registered class to instantiate.</param>
             <param name="serverName">The name of the server on which to create the object.</param>
             <remarks>
+            <para>
             The <paramref name="progID"/> argument can be a class identifier (CLSID) in standard
             GUID format with braces (e.g., "{0D43FE01-F093-11CF-8940-00A0C9054228}").
+            </para>
             <para>
             For information about the mapping between host members and script-callable properties
             and methods, see <see cref="M:Microsoft.ClearScript.ScriptEngine.AddHostObject(System.String,Microsoft.ClearScript.HostItemFlags,System.Object)"/>.
@@ -1068,6 +1437,51 @@
             and methods, see <see cref="M:Microsoft.ClearScript.ScriptEngine.AddHostObject(System.String,Microsoft.ClearScript.HostItemFlags,System.Object)"/>.
             </remarks>
         </member>
+        <member name="M:Microsoft.ClearScript.ScriptEngine.AddHostType(System.Type)">
+            <summary>
+            Exposes a host type to script code with a default name.
+            </summary>
+            <param name="type">The type to expose.</param>
+            <remarks>
+            <para>
+            This method uses <paramref name="type"/>'s name for the new global script item that
+            will represent it.
+            </para>
+            <para>
+            Host types are exposed to script code in the form of objects whose properties and
+            methods are bound to the type's static members and nested types. If the type has
+            generic parameters, the corresponding object will be invocable with type arguments to
+            yield a specific type.
+            </para>
+            <para>
+            For more information about the mapping between host members and script-callable
+            properties and methods, see <see cref="M:Microsoft.ClearScript.ScriptEngine.AddHostObject(System.String,Microsoft.ClearScript.HostItemFlags,System.Object)"/>.
+            </para>
+            </remarks>
+        </member>
+        <member name="M:Microsoft.ClearScript.ScriptEngine.AddHostType(Microsoft.ClearScript.HostItemFlags,System.Type)">
+            <summary>
+            Exposes a host type to script code with a default name and the specified options.
+            </summary>
+            <param name="flags">A value that selects options for the operation.</param>
+            <param name="type">The type to expose.</param>
+            <remarks>
+            <para>
+            This method uses <paramref name="type"/>'s name for the new global script item that
+            will represent it.
+            </para>
+            <para>
+            Host types are exposed to script code in the form of objects whose properties and
+            methods are bound to the type's static members and nested types. If the type has
+            generic parameters, the corresponding object will be invocable with type arguments to
+            yield a specific type.
+            </para>
+            <para>
+            For more information about the mapping between host members and script-callable
+            properties and methods, see <see cref="M:Microsoft.ClearScript.ScriptEngine.AddHostObject(System.String,Microsoft.ClearScript.HostItemFlags,System.Object)"/>.
+            </para>
+            </remarks>
+        </member>
         <member name="M:Microsoft.ClearScript.ScriptEngine.AddHostType(System.String,System.Type)">
             <summary>
             Exposes a host type to script code.
@@ -1075,10 +1489,12 @@
             <param name="itemName">A name for the new global script item that will represent the type.</param>
             <param name="type">The type to expose.</param>
             <remarks>
+            <para>
             Host types are exposed to script code in the form of objects whose properties and
             methods are bound to the type's static members and nested types. If the type has
             generic parameters, the corresponding object will be invocable with type arguments to
             yield a specific type.
+            </para>
             <para>
             For more information about the mapping between host members and script-callable
             properties and methods, see <see cref="M:Microsoft.ClearScript.ScriptEngine.AddHostObject(System.String,Microsoft.ClearScript.HostItemFlags,System.Object)"/>.
@@ -1093,10 +1509,12 @@
             <param name="flags">A value that selects options for the operation.</param>
             <param name="type">The type to expose.</param>
             <remarks>
+            <para>
             Host types are exposed to script code in the form of objects whose properties and
             methods are bound to the type's static members and nested types. If the type has
             generic parameters, the corresponding object will be invocable with type arguments to
             yield a specific type.
+            </para>
             <para>
             For more information about the mapping between host members and script-callable
             properties and methods, see <see cref="M:Microsoft.ClearScript.ScriptEngine.AddHostObject(System.String,Microsoft.ClearScript.HostItemFlags,System.Object)"/>.
@@ -1111,10 +1529,12 @@
             <param name="typeName">The fully qualified name of the type to expose.</param>
             <param name="typeArgs">Optional generic type arguments.</param>
             <remarks>
+            <para>
             Host types are exposed to script code in the form of objects whose properties and
             methods are bound to the type's static members and nested types. If the type has
             generic parameters, the corresponding object will be invocable with type arguments to
             yield a specific type.
+            </para>
             <para>
             For more information about the mapping between host members and script-callable
             properties and methods, see <see cref="M:Microsoft.ClearScript.ScriptEngine.AddHostObject(System.String,Microsoft.ClearScript.HostItemFlags,System.Object)"/>.
@@ -1130,10 +1550,12 @@
             <param name="typeName">The fully qualified name of the type to expose.</param>
             <param name="typeArgs">Optional generic type arguments.</param>
             <remarks>
+            <para>
             Host types are exposed to script code in the form of objects whose properties and
             methods are bound to the type's static members and nested types. If the type has
             generic parameters, the corresponding object will be invocable with type arguments to
             yield a specific type.
+            </para>
             <para>
             For more information about the mapping between host members and script-callable
             properties and methods, see <see cref="M:Microsoft.ClearScript.ScriptEngine.AddHostObject(System.String,Microsoft.ClearScript.HostItemFlags,System.Object)"/>.
@@ -1149,10 +1571,12 @@
             <param name="assemblyName">The name of the assembly that contains the type to expose.</param>
             <param name="typeArgs">Optional generic type arguments.</param>
             <remarks>
+            <para>
             Host types are exposed to script code in the form of objects whose properties and
             methods are bound to the type's static members and nested types. If the type has
             generic parameters, the corresponding object will be invocable with type arguments to
             yield a specific type.
+            </para>
             <para>
             For more information about the mapping between host members and script-callable
             properties and methods, see <see cref="M:Microsoft.ClearScript.ScriptEngine.AddHostObject(System.String,Microsoft.ClearScript.HostItemFlags,System.Object)"/>.
@@ -1170,10 +1594,12 @@
             <param name="assemblyName">The name of the assembly that contains the type to expose.</param>
             <param name="typeArgs">Optional generic type arguments.</param>
             <remarks>
+            <para>
             Host types are exposed to script code in the form of objects whose properties and
             methods are bound to the type's static members and nested types. If the type has
             generic parameters, the corresponding object will be invocable with type arguments to
             yield a specific type.
+            </para>
             <para>
             For more information about the mapping between host members and script-callable
             properties and methods, see <see cref="M:Microsoft.ClearScript.ScriptEngine.AddHostObject(System.String,Microsoft.ClearScript.HostItemFlags,System.Object)"/>.
@@ -1188,8 +1614,10 @@
             <param name="itemName">A name for the new global script item that will represent the type.</param>
             <param name="progID">The programmatic identifier (ProgID) of the registered class to import.</param>
             <remarks>
+            <para>
             The <paramref name="progID"/> argument can be a class identifier (CLSID) in standard
             GUID format with braces (e.g., "{0D43FE01-F093-11CF-8940-00A0C9054228}").
+            </para>
             <para>
             For information about the mapping between host members and script-callable properties
             and methods, see <see cref="M:Microsoft.ClearScript.ScriptEngine.AddHostObject(System.String,Microsoft.ClearScript.HostItemFlags,System.Object)"/>.
@@ -1205,8 +1633,10 @@
             <param name="progID">The programmatic identifier (ProgID) of the registered class to import.</param>
             <param name="serverName">The name of the server from which to import the type.</param>
             <remarks>
+            <para>
             The <paramref name="progID"/> argument can be a class identifier (CLSID) in standard
             GUID format with braces (e.g., "{0D43FE01-F093-11CF-8940-00A0C9054228}").
+            </para>
             <para>
             For information about the mapping between host members and script-callable properties
             and methods, see <see cref="M:Microsoft.ClearScript.ScriptEngine.AddHostObject(System.String,Microsoft.ClearScript.HostItemFlags,System.Object)"/>.
@@ -1222,8 +1652,10 @@
             <param name="flags">A value that selects options for the operation.</param>
             <param name="progID">The programmatic identifier (ProgID) of the registered class to import.</param>
             <remarks>
+            <para>
             The <paramref name="progID"/> argument can be a class identifier (CLSID) in standard
             GUID format with braces (e.g., "{0D43FE01-F093-11CF-8940-00A0C9054228}").
+            </para>
             <para>
             For information about the mapping between host members and script-callable properties
             and methods, see <see cref="M:Microsoft.ClearScript.ScriptEngine.AddHostObject(System.String,Microsoft.ClearScript.HostItemFlags,System.Object)"/>.
@@ -1240,8 +1672,10 @@
             <param name="progID">The programmatic identifier (ProgID) of the registered class to import.</param>
             <param name="serverName">The name of the server from which to import the type.</param>
             <remarks>
+            <para>
             The <paramref name="progID"/> argument can be a class identifier (CLSID) in standard
             GUID format with braces (e.g., "{0D43FE01-F093-11CF-8940-00A0C9054228}").
+            </para>
             <para>
             For information about the mapping between host members and script-callable properties
             and methods, see <see cref="M:Microsoft.ClearScript.ScriptEngine.AddHostObject(System.String,Microsoft.ClearScript.HostItemFlags,System.Object)"/>.
@@ -1306,9 +1740,11 @@
             </summary>
             <param name="code">The script code to execute.</param>
             <remarks>
+            <para>
             In some script languages the distinction between statements and expressions is
             significant but ambiguous for certain syntactic elements. This method always
             interprets the specified script code as a statement.
+            </para>
             <para>
             If a debugger is attached, it will present the specified script code to the user as a
             document with an automatically selected name. This document will not be discarded
@@ -1323,9 +1759,11 @@
             <param name="documentName">A document name for the script code. Currently this name is used only as a label in presentation contexts such as debugger user interfaces.</param>
             <param name="code">The script code to execute.</param>
             <remarks>
+            <para>
             In some script languages the distinction between statements and expressions is
             significant but ambiguous for certain syntactic elements. This method always
             interprets the specified script code as a statement.
+            </para>
             <para>
             If a debugger is attached, it will present the specified script code to the user as a
             document with the specified name. This document will not be discarded after execution.
@@ -1340,9 +1778,11 @@
             <param name="discard"><c>True</c> to discard the script document after execution, <c>false</c> otherwise.</param>
             <param name="code">The script code to execute.</param>
             <remarks>
+            <para>
             In some script languages the distinction between statements and expressions is
             significant but ambiguous for certain syntactic elements. This method always
             interprets the specified script code as a statement.
+            </para>
             <para>
             If a debugger is attached, it will present the specified script code to the user as a
             document with the specified name. Discarding this document removes it from view but
@@ -1370,9 +1810,11 @@
             <param name="code">The script code to evaluate.</param>
             <returns>The result value.</returns>
             <remarks>
+            <para>
             In some script languages the distinction between statements and expressions is
             significant but ambiguous for certain syntactic elements. This method always
             interprets the specified script code as an expression.
+            </para>
             <para>
             If a debugger is attached, it will present the specified script code to the user as a
             document with an automatically selected name. This document will be discarded after
@@ -1392,9 +1834,11 @@
             <param name="code">The script code to evaluate.</param>
             <returns>The result value.</returns>
             <remarks>
+            <para>
             In some script languages the distinction between statements and expressions is
             significant but ambiguous for certain syntactic elements. This method always
             interprets the specified script code as an expression.
+            </para>
             <para>
             If a debugger is attached, it will present the specified script code to the user as a
             document with the specified name. This document will be discarded after execution.
@@ -1414,9 +1858,11 @@
             <param name="code">The script code to evaluate.</param>
             <returns>The result value.</returns>
             <remarks>
+            <para>
             In some script languages the distinction between statements and expressions is
             significant but ambiguous for certain syntactic elements. This method always
             interprets the specified script code as an expression.
+            </para>
             <para>
             If a debugger is attached, it will present the specified script code to the user as a
             document with the specified name. Discarding this document removes it from view but
@@ -1602,6 +2048,18 @@
             resources are importable and which members of exposed resources are accessible.
             </remarks>
         </member>
+        <member name="P:Microsoft.ClearScript.ScriptEngine.DefaultAccess">
+            <summary>
+            Gets or sets the default script access setting for all members of exposed objects.
+            </summary>
+            <remarks>
+            Use <see cref="T:Microsoft.ClearScript.DefaultScriptUsageAttribute"/>, <see cref="T:Microsoft.ClearScript.ScriptUsageAttribute"/>, or
+            their subclasses to override this property for individual types and members. Note that
+            this property has no effect on the method binding algorithm. If a script-based call is
+            bound to a method that is blocked by this property, it will be rejected even if an
+            overload exists that could receive the call.
+            </remarks>
+        </member>
         <member name="P:Microsoft.ClearScript.ScriptEngine.FormatCode">
             <summary>
             Enables or disables script code formatting.
@@ -1635,7 +2093,36 @@
             are restricted to their declared types. The default behavior is a general requirement
             for correct method binding, so setting this property to <c>true</c> is not recommended.
             </remarks>
-            <seealso cref="T:Microsoft.ClearScript.ScriptMemberFlags"/>
+            <seealso cref="F:Microsoft.ClearScript.ScriptMemberFlags.ExposeRuntimeType"/>
+        </member>
+        <member name="P:Microsoft.ClearScript.ScriptEngine.DisableListIndexTypeRestriction">
+            <summary>
+            Enables or disables type restriction for array and list elements retrieved by index.
+            </summary>
+            <remarks>
+            In ClearScript 5.4.4 and earlier, indexed array and list elements were exempt from type
+            restriction. ClearScript 5.4.5 introduced a breaking change to correct this, but you can
+            set this property to <c>true</c> to restore the exemption if you have older script code
+            that depends on it.
+            </remarks>
+            <seealso cref="P:Microsoft.ClearScript.ScriptEngine.DisableTypeRestriction"/>
+        </member>
+        <member name="P:Microsoft.ClearScript.ScriptEngine.EnableNullResultWrapping">
+            <summary>
+            Enables or disables <c>null</c> wrapping for field, property, and method return values.
+            </summary>
+            <remarks>
+            When this property is set to <c>true</c>, all field, property, and method return values
+            are marshaled with full .NET type information even if they are <c>null</c>. Note that
+            such values will always fail equality comparison with JavaScript's
+            <see href="https://msdn.microsoft.com/en-us/library/ie/fhcc96d6(v=vs.94).aspx">null</see>,
+            VBScript's
+            <see href="https://msdn.microsoft.com/en-us/library/f8tbc79x(v=vs.85).aspx">Nothing</see>,
+            and other similar values. Instead, use <see cref="M:Microsoft.ClearScript.HostFunctions.isNull(System.Object)"/> or
+            <see cref="M:System.Object.Equals(System.Object,System.Object)"/> to perform such a comparison.
+            </remarks>
+            <seealso cref="F:Microsoft.ClearScript.ScriptMemberFlags.WrapNullResult"/>
+            <seealso cref="M:Microsoft.ClearScript.HostFunctions.isNull(System.Object)"/>
         </member>
         <member name="P:Microsoft.ClearScript.ScriptEngine.UseReflectionBindFallback">
             <summary>
@@ -1942,9 +2429,11 @@
             <param name="args">Optional constructor arguments.</param>
             <returns>A new host object of the specified type.</returns>
             <remarks>
+            <para>
             This function is provided for script languages that do not support external
             instantiation. It is overloaded with <see cref="M:Microsoft.ClearScript.HostFunctions.newObj(System.Object,System.Object[])"/> and
             selected at runtime if <typeparamref name="T"/> can be used as a type argument.
+            </para>
             <para>
             For information about the mapping between host members and script-callable properties
             and methods, see
@@ -1976,10 +2465,12 @@
             <param name="args">Optional constructor arguments.</param>
             <returns>A new host object of the specified type.</returns>
             <remarks>
+            <para>
             This function is provided for script languages that do not support external
             instantiation. It is overloaded with <see cref="M:Microsoft.ClearScript.HostFunctions.newObj``1(System.Object[])"/> and selected at runtime if
             <paramref name="type"/> cannot be used as a type argument. Note that this applies
             to some host types that support instantiation, such as certain COM/ActiveX types.
+            </para>
             <para>
             For information about the mapping between host members and script-callable properties
             and methods, see
@@ -2045,10 +2536,12 @@
             <param name="initValue">An optional initial value for the variable.</param>
             <returns>A new host variable of the specified type.</returns>
             <remarks>
+            <para>
             A host variable is a strongly typed object that holds a value of the specified type.
             Host variables are useful for passing method arguments by reference. In addition to
             being generally interchangeable with their stored values, host variables support the
             following properties:
+            </para>
             <para>
             <list type="table">
                 <listheader>
@@ -2209,11 +2702,13 @@
             <param name="scriptFunc">The script function for which to create a delegate.</param>
             <returns>A new delegate that invokes the specified script function and returns its result value.</returns>
             <remarks>
+            <para>
             This function creates a delegate that accepts <paramref name="argCount"/> arguments and
             returns the result of invoking <paramref name="scriptFunc"/>. The type of all
             parameters and the return value is <see cref="T:System.Object"/>. Such a delegate is
             often useful in strongly typed contexts because of
             <see href="http://msdn.microsoft.com/en-us/library/ms173174(VS.80).aspx">contravariance</see>.
+            </para>
             <para>
             For information about the types of result values that script code can return, see
             <see cref="M:Microsoft.ClearScript.ScriptEngine.Evaluate(System.String,System.Boolean,System.String)"/>.
@@ -2229,10 +2724,12 @@
             <typeparam name="T">The host type for which to get the <see cref="T:System.Type"/>.</typeparam>
             <returns>The <see cref="T:System.Type"/> for the specified host type.</returns>
             <remarks>
+            <para>
             This function is similar to the C#
             <c><see href="http://msdn.microsoft.com/en-us/library/58918ffs(VS.71).aspx">typeof</see></c>
             operator. It is overloaded with <see cref="M:Microsoft.ClearScript.HostFunctions.typeOf(System.Object)"/> and selected at runtime if
             <typeparamref name="T"/> can be used as a type argument.
+            </para>
             <para>
             This function throws an exception if the script engine's
             <see cref="P:Microsoft.ClearScript.ScriptEngine.AllowReflection"/> property is set to <c>false</c>.
@@ -2258,11 +2755,13 @@
             <param name="value">The host type for which to get the <see cref="T:System.Type"/>.</param>
             <returns>The <see cref="T:System.Type"/> for the specified host type.</returns>
             <remarks>
+            <para>
             This function is similar to the C#
             <c><see href="http://msdn.microsoft.com/en-us/library/58918ffs(VS.71).aspx">typeof</see></c>
             operator. It is overloaded with <see cref="M:Microsoft.ClearScript.HostFunctions.typeOf``1"/> and selected at runtime if
             <paramref name="value"/> cannot be used as a type argument. Note that this applies to
             some host types; examples are static types and overloaded generic type groups.
+            </para>
             <para>
             This function throws an exception if the script engine's
             <see cref="P:Microsoft.ClearScript.ScriptEngine.AllowReflection"/> property is set to <c>false</c>.
@@ -2387,6 +2886,21 @@
             arguments are always host types, this method ignores its type argument and always
             returns <c>true</c>.
             </remarks>
+        </member>
+        <member name="M:Microsoft.ClearScript.HostFunctions.isNull(System.Object)">
+            <summary>
+            Determines whether the specified value is <c>null</c>.
+            </summary>
+            <param name="value">The value to test.</param>
+            <returns><c>True</c> if <paramref name="value"/> is <c>null</c>, <c>false</c> otherwise.</returns>
+            <remarks>
+            Use this function to test field, property, and method return values when <c>null</c>
+            result wrapping is in effect (see 
+            <see cref="F:Microsoft.ClearScript.ScriptMemberFlags.WrapNullResult"/> and
+            <see cref="P:Microsoft.ClearScript.ScriptEngine.EnableNullResultWrapping"/>).
+            </remarks>
+            <seealso cref="F:Microsoft.ClearScript.ScriptMemberFlags.WrapNullResult"/>
+            <seealso cref="P:Microsoft.ClearScript.ScriptEngine.EnableNullResultWrapping"/>
         </member>
         <member name="M:Microsoft.ClearScript.HostFunctions.flags``1(``0[])">
             <summary>
@@ -2958,10 +3472,12 @@
             <param name="hostTypeArgs">Optional generic type arguments.</param>
             <returns>The imported host type.</returns>
             <remarks>
+            <para>
             Host types are imported in the form of objects whose properties and methods are bound
             to the host type's static members and nested types. If <paramref name="name"/> refers
             to a generic type, the corresponding object will be invocable with type arguments to
             yield a specific type.
+            </para>
             <para>
             For more information about the mapping between host members and script-callable
             properties and methods, see
@@ -2997,10 +3513,12 @@
             <param name="hostTypeArgs">Optional generic type arguments.</param>
             <returns>The imported host type.</returns>
             <remarks>
+            <para>
             Host types are imported in the form of objects whose properties and methods are bound
             to the host type's static members and nested types. If <paramref name="name"/> refers
             to a generic type, the corresponding object will be invocable with type arguments to
             yield a specific type.
+            </para>
             <para>
             For more information about the mapping between host members and script-callable
             properties and methods, see
@@ -3031,10 +3549,12 @@
             <param name="type">The <see cref="T:System.Type"/> that specifies the host type to import.</param>
             <returns>The imported host type.</returns>
             <remarks>
+            <para>
             Host types are imported in the form of objects whose properties and methods are bound
             to the host type's static members and nested types. If <paramref name="type"/> refers
             to a generic type, the corresponding object will be invocable with type arguments to
             yield a specific type.
+            </para>
             <para>
             For more information about the mapping between host members and script-callable
             properties and methods, see
@@ -3228,8 +3748,10 @@
             </summary>
             <returns>The script call stack formatted as a string.</returns>
             <remarks>
+            <para>
             This method returns an empty string if the script engine is not executing script code.
             The stack trace text format is defined by the script engine.
+            </para>
             <para>
             The <see cref="T:Microsoft.ClearScript.Windows.WindowsScriptEngine"/> version of this method returns the empty string
             if script debugging features have not been enabled for the instance.
@@ -3267,6 +3789,11 @@
         <member name="P:Microsoft.ClearScript.Windows.WindowsScriptEngine.Dispatcher">
             <summary>
             Gets the <see cref="P:Microsoft.ClearScript.Windows.WindowsScriptEngine.Dispatcher"/> associated with the current script engine.
+            </summary>
+        </member>
+        <member name="P:Microsoft.ClearScript.Windows.WindowsScriptEngine.HostWindow">
+            <summary>
+            Gets or sets an interface that supports the display of dialogs on behalf of script code.
             </summary>
         </member>
         <member name="P:Microsoft.ClearScript.Windows.WindowsScriptEngine.Script">
@@ -3323,10 +3850,12 @@
             <param name="command">The script command to execute.</param>
             <returns>The command output.</returns>
             <remarks>
+            <para>
             This method is similar to <see cref="M:Microsoft.ClearScript.ScriptEngine.Evaluate(System.String)"/> but optimized for
             command consoles. The specified command must be limited to a single expression or
             statement. Script engines can override this method to customize command execution as
             well as the process of converting the result to a string for console output.
+            </para>
             <para>
             The <see cref="T:Microsoft.ClearScript.Windows.JScriptEngine"/> version of this method attempts to use
             <see href="http://msdn.microsoft.com/en-us/library/k6xhc6yc(VS.85).aspx">toString</see>
@@ -3421,10 +3950,12 @@
             <param name="command">The script command to execute.</param>
             <returns>The command output.</returns>
             <remarks>
+            <para>
             This method is similar to <see cref="M:Microsoft.ClearScript.ScriptEngine.Evaluate(System.String)"/> but optimized for
             command consoles. The specified command must be limited to a single expression or
             statement. Script engines can override this method to customize command execution as
             well as the process of converting the result to a string for console output.
+            </para>
             <para>
             The <see cref="T:Microsoft.ClearScript.Windows.VBScriptEngine"/> version of this method supports both expressions and
             statements. If the specified command begins with "eval " (not case-sensitive), the
@@ -3625,10 +4156,12 @@
             <param name="command">The script command to execute.</param>
             <returns>The command output.</returns>
             <remarks>
+            <para>
             This method is similar to <see cref="M:Microsoft.ClearScript.ScriptEngine.Evaluate(System.String)"/> but optimized for
             command consoles. The specified command must be limited to a single expression or
             statement. Script engines can override this method to customize command execution as
             well as the process of converting the result to a string for console output.
+            </para>
             <para>
             The <see cref="T:Microsoft.ClearScript.V8.V8ScriptEngine"/> version of this method attempts to use
             <see href="http://msdn.microsoft.com/en-us/library/k6xhc6yc(VS.85).aspx">toString</see>
@@ -3679,9 +4212,11 @@
             Gets or sets a soft limit for the size of the V8 runtime's heap.
             </summary>
             <remarks>
+            <para>
             This property is specified in bytes. When it is set to the default value, heap size
             monitoring is disabled, and scripts with memory leaks or excessive memory usage
             can cause unrecoverable errors and process termination.
+            </para>
             <para>
             A V8 runtime unconditionally terminates the process when it exceeds its resource
             constraints (see <see cref="T:Microsoft.ClearScript.V8.V8RuntimeConstraints"/>). This property enables external
@@ -3710,13 +4245,27 @@
             Gets or sets the maximum amount by which the V8 runtime is permitted to grow the stack during script execution.
             </summary>
             <remarks>
+            <para>
             This property is specified in bytes. When it is set to the default value, no stack
             usage limit is enforced, and scripts with unchecked recursion or other excessive stack
             usage can cause unrecoverable errors and process termination.
+            </para>
             <para>
             Note that the V8 runtime does not monitor stack usage while a host call is in progress.
             Monitoring is resumed when control returns to the runtime.
             </para>
+            </remarks>
+        </member>
+        <member name="P:Microsoft.ClearScript.V8.V8ScriptEngine.SuppressExtensionMethodEnumeration">
+            <summary>
+            Enables or disables extension method enumeration.
+            </summary>
+            <remarks>
+            By default, all exposed extension methods appear as enumerable properties of all host
+            objects, regardless of type. Setting this property to <c>true</c> excludes all
+            extension methods from the list of enumerable properties of all host objects. Note that
+            doing so affects only property enumeration; extension methods remain both retrievable
+            and invocable regardless of this property's value.
             </remarks>
         </member>
         <member name="P:Microsoft.ClearScript.V8.V8ScriptEngine.FileNameExtension">
